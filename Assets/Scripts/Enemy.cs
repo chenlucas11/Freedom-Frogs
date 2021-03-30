@@ -19,7 +19,6 @@ public class Enemy : PhysicsObject
         
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -29,6 +28,11 @@ public class Enemy : PhysicsObject
             if (player != null)
                 player.Damage();
 
+            Destroy(this.gameObject);
+        }
+        if (other.CompareTag("Tongue"))
+        {
+            Debug.Log("Tongue hit");
             Destroy(this.gameObject);
         }
     }

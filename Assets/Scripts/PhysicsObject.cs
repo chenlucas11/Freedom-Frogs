@@ -35,9 +35,15 @@ public class PhysicsObject : MonoBehaviour
     {
         targetVelocity = Vector2.zero;
         ComputeVelocity();
+        FireTongue();
     }
 
     protected virtual void ComputeVelocity()
+    {
+
+    }
+
+    protected virtual void FireTongue()
     {
 
     }

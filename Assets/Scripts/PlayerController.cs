@@ -7,7 +7,8 @@ public class PlayerController : PhysicsObject
     [SerializeField] private int lives = 3;
     [SerializeField] private float maxSpeed = 7;
     [SerializeField] public float jumpSpeed = 7;
-
+    [SerializeField] private GameObject tongue;
+    
     private SpriteRenderer spriteRenderer;
     //private Animator animator;
 
@@ -15,6 +16,14 @@ public class PlayerController : PhysicsObject
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         //animator = GetComponent<Animator>();
+    }
+
+    protected override void FireTongue()
+    {
+        Vector3 tongue_length = new Vector3(2.0f, 0.0f, 0.0f);
+        if( Input.GetKeyDown(KeyCode.T) ){
+            Instantiate(tongue, transform.position + tongue_length, Quaternion.identity);
+        }
     }
 
     protected override void ComputeVelocity()
