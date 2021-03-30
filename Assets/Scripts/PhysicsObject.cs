@@ -91,7 +91,7 @@ public class PhysicsObject : MonoBehaviour
                 float projection = Vector2.Dot(velocity, currentNormal);
                 if (projection < 0)
                 {
-                    velocity = velocity - projection * currentNormal;
+                    velocity -= projection * currentNormal;
                 }
 
                 float modifiedDistance = hitBufferList[i].distance - shellRadius;
@@ -101,7 +101,7 @@ public class PhysicsObject : MonoBehaviour
 
         }
 
-        rigidBody2D.position = rigidBody2D.position + move.normalized * distance;
+        rigidBody2D.position += move.normalized * distance;
     }
 
 }

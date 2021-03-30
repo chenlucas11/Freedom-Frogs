@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : PhysicsObject
 {
+    [SerializeField] private int lives = 3;
     [SerializeField] private float maxSpeed = 7;
     [SerializeField] public float jumpSpeed = 7;
 
@@ -44,5 +45,17 @@ public class PlayerController : PhysicsObject
         //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
         targetVelocity = move * maxSpeed;
+    }
+
+    public void Damage()
+    {
+        lives--;
+
+        //uIManager.UpdateLives(lives);
+
+        if (lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
