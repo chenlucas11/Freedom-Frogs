@@ -11,11 +11,13 @@ public class PlayerController : PhysicsObject
     
     private SpriteRenderer spriteRenderer;
     //private Animator animator;
+    private UIManager uIManager;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         //animator = GetComponent<Animator>();
+        uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     protected override void FireTongue()
@@ -60,7 +62,7 @@ public class PlayerController : PhysicsObject
     {
         lives--;
 
-        //uIManager.UpdateLives(lives);
+        uIManager.UpdateLives(lives);
 
         if (lives < 1)
         {
