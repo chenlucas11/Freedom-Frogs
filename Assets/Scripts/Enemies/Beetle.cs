@@ -48,12 +48,12 @@ public class Beetle : PhysicsObject
             yield return new WaitForSeconds(3.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
-            spriteRenderer.flipY = !spriteRenderer.flipY;
+            this.transform.localScale = new Vector2(1, -1);
             targetVelocity = Vector2.left;
             yield return new WaitForSeconds(3.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
-            spriteRenderer.flipY = !spriteRenderer.flipY;
+            this.transform.localScale = new Vector2(1, 1);
         }
     }
 }

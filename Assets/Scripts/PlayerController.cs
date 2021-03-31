@@ -50,10 +50,13 @@ public class PlayerController : PhysicsObject
             velocity.y = jumpSpeed;
         }
 
-        bool flipSprite = (spriteRenderer.flipX ? (move.x > 0f) : (move.x < 0f));
-        if (flipSprite)
+        if (move.x > 0f)
         {
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            this.transform.localScale = new Vector2(1, 1);
+        }
+        else if (move.x < 0f)
+        {
+            this.transform.localScale = new Vector2(-1, 1);
         }
 
         //animator.SetBool("grounded", grounded);

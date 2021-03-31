@@ -34,13 +34,13 @@ public class Bird : PhysicsObject
             yield return new WaitForSeconds(5.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(1.0f);
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            this.transform.localScale = new Vector2(-1, 1);
             yield return new WaitForSeconds(1.0f);
             targetVelocity = Vector2.left;
             yield return new WaitForSeconds(5.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(1.0f);
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            this.transform.localScale = new Vector2(1, 1);
             yield return new WaitForSeconds(1.0f);
         }
     }
