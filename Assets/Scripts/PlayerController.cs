@@ -5,22 +5,33 @@ using UnityEngine;
 public class PlayerController : PhysicsObject
 {
     [SerializeField] private int lives = 3;
-    [SerializeField] private float maxSpeed = 7;
-    [SerializeField] public float jumpSpeed = 7;
+    [SerializeField] private float maxSpeed = 3;
+    [SerializeField] private float jumpSpeed = 10;
     [SerializeField] private GameObject tongue;
-    
+
+    // Music Pieces
+    //[SerializeField] private bool pieceOneCollected = false;
+    //[SerializeField] private bool pieceTwoCollected = false;
+    //[SerializeField] private bool pieceThreeCollected = false;
+
     private SpriteRenderer spriteRenderer;
-    //private Animator animator;
     private UIManager uIManager;
+    //private Animator animator;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //animator = GetComponent<Animator>();
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        //animator = GetComponent<Animator>();
     }
 
-    protected override void FireTongue()
+    void Update()
+    {
+        ComputeVelocity();
+        FireTongue();
+    }
+
+    private void FireTongue()
     {
         Vector3 tongue_length = new Vector3(2.0f, 0.0f, 0.0f);
         if( Input.GetKeyDown(KeyCode.T) ){
@@ -28,22 +39,15 @@ public class PlayerController : PhysicsObject
         }
     }
 
-    protected override void ComputeVelocity()
+    private void ComputeVelocity()
     {
         Vector2 move = Vector2.zero;
 
         move.x = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetButtonDown("Jump"))
         {
             velocity.y = jumpSpeed;
-        }
-        else if (Input.GetButtonUp("Jump"))
-        {
-            if (velocity.y > 0)
-            {
-                velocity.y *= 0.5f;
-            }
         }
 
         bool flipSprite = (spriteRenderer.flipX ? (move.x > 0f) : (move.x < 0f));

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PhysicsObject : MonoBehaviour
 {
     public float minGroundNormalY = .65f;
-    public float gravityModifier = 1f;
+    public float gravityModifier = 1.5f;
 
     protected Vector2 targetVelocity;
     protected bool grounded;
@@ -34,19 +34,8 @@ public class PhysicsObject : MonoBehaviour
     void Update()
     {
         targetVelocity = Vector2.zero;
-        ComputeVelocity();
-        FireTongue();
     }
 
-    protected virtual void ComputeVelocity()
-    {
-
-    }
-
-    protected virtual void FireTongue()
-    {
-
-    }
 
     void FixedUpdate()
     {
@@ -56,15 +45,12 @@ public class PhysicsObject : MonoBehaviour
         grounded = false;
 
         Vector2 deltaPosition = velocity * Time.deltaTime;
-
         Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
 
         Vector2 move = moveAlongGround * deltaPosition.x;
-
         Movement(move, false);
 
         move = Vector2.up * deltaPosition.y;
-
         Movement(move, true);
     }
 
@@ -76,10 +62,9 @@ public class PhysicsObject : MonoBehaviour
         {
             int count = rigidBody2D.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
             hitBufferList.Clear();
+
             for (int i = 0; i < count; i++)
-            {
                 hitBufferList.Add(hitBuffer[i]);
-            }
 
             for (int i = 0; i < hitBufferList.Count; i++)
             {
@@ -96,15 +81,11 @@ public class PhysicsObject : MonoBehaviour
 
                 float projection = Vector2.Dot(velocity, currentNormal);
                 if (projection < 0)
-                {
                     velocity -= projection * currentNormal;
-                }
 
                 float modifiedDistance = hitBufferList[i].distance - shellRadius;
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
-
-
         }
 
         rigidBody2D.position += move.normalized * distance;
