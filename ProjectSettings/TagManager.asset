@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tongue
   - Dragonfly
+  - PlayerBottom
   layers:
   - Default
   - TransparentFX

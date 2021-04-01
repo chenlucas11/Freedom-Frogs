@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
     [SerializeField] private Text restartText;
+    [SerializeField] private Image livesImg;
+    [SerializeField] private Sprite[] liveSprites;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
+        livesImg.sprite = liveSprites[currentLives];
         if (currentLives < 1)
         {
             GameOverSequence();

@@ -32,7 +32,7 @@ public class Beetle : PhysicsObject
                 Destroy(this.gameObject);
             }
         }
-        if (other.CompareTag("Tongue"))
+        else if (other.CompareTag("Tongue"))
         {
             Debug.Log("Tongue hit");
             if (flipped)
@@ -42,6 +42,13 @@ public class Beetle : PhysicsObject
             else
             {
                 FlipOver();
+            }
+        }
+        else if (other.CompareTag("PlayerBottom"))
+        {
+            if (flipped)
+            {
+                Destroy(this.gameObject);
             }
         }
     }

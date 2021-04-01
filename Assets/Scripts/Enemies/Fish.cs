@@ -28,7 +28,7 @@ public class Fish : PhysicsObject
         {
             transform.Rotate(0.0f, 0.0f, 180.0f);
             falling = true;
-        }        
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,7 +42,11 @@ public class Fish : PhysicsObject
 
             Destroy(this.gameObject);
         }
-        if (other.CompareTag("Tongue"))
+        else if (other.CompareTag("Tongue"))
+        {
+            Destroy(this.gameObject);
+        }
+        else if (other.CompareTag("PlayerBottom"))
         {
             Destroy(this.gameObject);
         }

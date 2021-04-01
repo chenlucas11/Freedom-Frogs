@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dragonfly : MonoBehaviour
+public class Dragonfly : PhysicsObject
 {
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private Vector3 distance = new Vector3(17, 0, 0);
@@ -18,19 +18,18 @@ public class Dragonfly : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gravityModifier = 0f;
         facingRight = true;
         currentTarget = transform.position + distance;
         target = null;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (transform.position != currentTarget)
             Move();
         else
             UpdateTarget();
-
     }
 
     void LateUpdate()
@@ -43,8 +42,11 @@ public class Dragonfly : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        target = other.gameObject;
-        offset = target.transform.position - transform.position;
+        if (other.CompareTag("PlayerBottom"))
+        {
+            target = other.transform.parent.gameObject;
+            offset = target.transform.position - transform.position;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
