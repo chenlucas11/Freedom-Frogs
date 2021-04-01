@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Beetle : PhysicsObject
 {
-    private void Awake()
-    {
+    private bool flipped = false;
 
-    }
 
     private void Start()
     {
@@ -29,28 +27,60 @@ public class Beetle : PhysicsObject
             if (player != null)
                 player.Damage();
 
-            Destroy(this.gameObject);
+            if (flipped)
+            {
+                Destroy(this.gameObject);
+            }
         }
         if (other.CompareTag("Tongue"))
         {
             Debug.Log("Tongue hit");
-            Destroy(this.gameObject);
+            if (flipped)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                FlipOver();
+            }
+        }
+    }
+
+    private void FlipOver()
+    {
+        if (!flipped)
+        {
+            this.transform.localScale = new Vector2(1, -1);
+            flipped = true;
+        }
+        else
+        {
+            this.transform.localScale = new Vector2(1, 1);
+            flipped = false;
         }
     }
 
     IEnumerator BeetleRoutine()
     {
-        while (true)
+        while (!flipped)
         {
             targetVelocity = Vector2.right;
+            if (flipped)
+                yield break;
             yield return new WaitForSeconds(3.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
+            if (flipped)
+                yield break;
             this.transform.localScale = new Vector2(1, 1);
             targetVelocity = Vector2.left;
+            if (flipped)
+                yield break;
             yield return new WaitForSeconds(3.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
+            if (flipped)
+                yield break;
             this.transform.localScale = new Vector2(-1, 1);
         }
     }
