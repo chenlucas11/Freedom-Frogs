@@ -14,13 +14,11 @@ public class PlayerController : PhysicsObject
     //[SerializeField] private bool pieceTwoCollected = false;
     //[SerializeField] private bool pieceThreeCollected = false;
 
-    private SpriteRenderer spriteRenderer;
     private UIManager uIManager;
     //private Animator animator;
 
     void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         //animator = GetComponent<Animator>();
     }
@@ -52,11 +50,11 @@ public class PlayerController : PhysicsObject
 
         if (move.x > 0f)
         {
-            this.transform.localScale = new Vector2(1, 1);
+            transform.localScale = new Vector2(1, 1);
         }
         else if (move.x < 0f)
         {
-            this.transform.localScale = new Vector2(-1, 1);
+            transform.localScale = new Vector2(-1, 1);
         }
 
         //animator.SetBool("grounded", grounded);
