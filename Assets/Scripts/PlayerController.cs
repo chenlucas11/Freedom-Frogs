@@ -31,9 +31,11 @@ public class PlayerController : PhysicsObject
 
     private void FireTongue()
     {
-        Vector3 tongue_length = new Vector3(2.0f, 0.0f, 0.0f);
+        Vector3 tongue_length = new Vector3(3.8f, 0.0f, 0.0f);
+        Quaternion rotation = Quaternion.LookRotation(Vector3.right);
         if( Input.GetKeyDown(KeyCode.T) ){
-            Instantiate(tongue, transform.position + tongue_length, Quaternion.identity);
+            GameObject tongue_instance = (GameObject) Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
+            Destroy(tongue_instance,1.0f);
         }
     }
 
