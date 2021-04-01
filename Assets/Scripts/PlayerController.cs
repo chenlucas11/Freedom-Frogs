@@ -29,7 +29,7 @@ public class PlayerController : PhysicsObject
         FireTongue();
     }
 
-    private void FireTongue()
+        private void FireTongue()
     {
         Vector3 tongue_length = new Vector3(3.8f, 0.0f, 0.0f);
         Quaternion rotation = Quaternion.LookRotation(Vector3.right);
@@ -77,3 +77,4 @@ public class PlayerController : PhysicsObject
         }
     }
 }
+
