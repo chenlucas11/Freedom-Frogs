@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class Beetle : PhysicsObject
 {
-    private SpriteRenderer spriteRenderer;
-
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     private void Start()
