@@ -11,10 +11,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject tongue;
     [SerializeField] private GameObject projectile;
     [SerializeField] private float force = 7;
-    private float projectileSpeed = 7;
+    [SerializeField] private Vector3 tongue_length = new Vector3(2.5f, 0.0f, 0.0f);
+    [SerializeField] private Vector3 projectileOffset = new Vector3(1.5f, 0.0f, 0.0f);
     private Rigidbody2D rigidBody2D;
+    private GameObject tongue_instance;
 
-    
+    private float canAttack = -1f;
+    [SerializeField] private float attackRate = 0.5f;
+
 
     private UIManager uIManager;
     //private Animator animator;
@@ -26,65 +30,65 @@ public class PlayerController : MonoBehaviour
         //animator = GetComponent<Animator>();
     }
 
+    void Start()
+    {
+        canAttack = -1f;
+    }
+
     void Update()
     {
         CalcMovement();
-        FireTongue();
-        ShootProjectile();
+        if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack)
+        {
+            FireTongue();
+        }
+        else if (Input.GetKeyDown(KeyCode.R) && Time.time > canAttack)
+        {
+            ShootProjectile();
+        }
     }
 
     private void FireTongue()
     {
-        Vector3 tongue_length;
+        canAttack = Time.time + attackRate;
         if (this.transform.localScale[0] < 1)
         {
-            tongue_length = new Vector3(-3.8f, 0.0f, 0.0f);
+            tongue_instance = (GameObject)Instantiate(tongue, transform.position - tongue_length, Quaternion.identity, transform);
         }
         else
         {
-            tongue_length = new Vector3(3.8f, 0.0f, 0.0f);
+            tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
         }
-        Quaternion rotation = Quaternion.LookRotation(Vector3.right);
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GameObject tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
-            Destroy(tongue_instance, 1.0f);
-        }
+        Destroy(tongue_instance, 0.5f);
     }
 
     private void ShootProjectile()
     {
-        if( Input.GetKeyDown(KeyCode.R) ){
-            Vector3 projectile_length;
-            if (this.transform.localScale[0] < 1)
-            {
-                projectile_length = new Vector3(-1.5f, 0.0f, 0.0f);
-            }
-            else
-            {
-                projectile_length = new Vector3(1.5f, 0.0f, 0.0f);
-            }
-            Instantiate(projectile, transform.position + projectile_length, Quaternion.identity);
-            //Destroy(projectile_instance, 1.0f);
+        canAttack = Time.time + attackRate;
+        if (this.transform.localScale[0] < 1)
+        {
+            Instantiate(projectile, transform.position - projectileOffset, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(projectile, transform.position + projectileOffset, Quaternion.identity);
         }
     }
 
     private void CalcMovement()
     {
-        Vector2 move = Vector2.zero;
-
-        move.x = Input.GetAxis("Horizontal");
+        float horizontalMovement = Input.GetAxis("Horizontal");
 
         if (Input.GetButtonDown("Jump"))
         {
-            rigidBody2D.AddForce(new Vector2(move.x * speed, jumpSpeed), ForceMode2D.Impulse);
+            rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
         }
 
-        if (move.x > 0f)
+        if (horizontalMovement > 0f)
         {
             transform.localScale = new Vector2(1, 1);
         }
-        else if (move.x < 0f)
+        else if (horizontalMovement < 0f)
         {
             transform.localScale = new Vector2(-1, 1);
         }

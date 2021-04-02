@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private PlayerController player;
+    [SerializeField] private float speed = 8;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +18,11 @@ public class Projectile : MonoBehaviour
     {
         if (player.transform.position[0] > transform.position[0])
         {
-            transform.Translate(Vector2.left * Time.deltaTime * 8);
+            transform.Translate(Vector2.left * Time.deltaTime * speed);
         }
         else
         {
-            transform.Translate(Vector2.right * Time.deltaTime * 8);
+            transform.Translate(Vector2.right * Time.deltaTime * speed);
         }
     }
 }
