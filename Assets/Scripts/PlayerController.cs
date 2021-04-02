@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Damage(Collision2D collision)
+    public void Knockback(Collision2D collision)
     {
         if (!hit)
         {
@@ -103,9 +103,7 @@ public class PlayerController : MonoBehaviour
             dir = -dir.normalized;
             rigidBody2D.AddForce(dir * force, ForceMode2D.Impulse);
             StartCoroutine(ApplyKnockback(dir));
-            this.Damage();
         }
-
     }
 
     IEnumerator ApplyKnockback(Vector2 dir)

@@ -26,7 +26,8 @@ public class Beetle : PhysicsObject
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerController player = collision.transform.GetComponent<PlayerController>();
-            player.Damage(collision);
+            player.Knockback(collision);
+            player.Damage();
         }
         else if (collision.gameObject.CompareTag("Tongue"))
         {
@@ -49,7 +50,8 @@ public class Beetle : PhysicsObject
             else
             {
                 PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
-                player.Damage(collision);
+                player.Knockback(collision);
+                player.Damage();
             }
         }
     }
