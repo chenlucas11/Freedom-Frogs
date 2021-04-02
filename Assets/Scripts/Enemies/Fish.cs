@@ -5,13 +5,11 @@ using UnityEngine;
 public class Fish : PhysicsObject
 {
     [SerializeField] private float jumpSpeed = 15.0f;
-    private Vector3 startPos;
     private bool falling = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        startPos = transform.position;
         velocity.y = jumpSpeed;
     }
 
@@ -39,8 +37,6 @@ public class Fish : PhysicsObject
 
             if (player != null)
                 player.Damage();
-
-            Destroy(this.gameObject);
         }
         else if (other.CompareTag("Tongue"))
         {

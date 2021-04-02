@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : PhysicsObject
+public class PlayerController : MonoBehaviour
 {
+    public bool hit = false;
     [SerializeField] private int lives = 3;
-    [SerializeField] private float maxSpeed = 3;
+    [SerializeField] private float maxSpeed = 2;
     [SerializeField] private float jumpSpeed = 10;
     [SerializeField] private GameObject tongue;
+    [SerializeField] private float force = 7;
+    private Rigidbody2D rigidBody2D;
 
     // Music Pieces
     //[SerializeField] private bool pieceOneCollected = false;
@@ -20,12 +23,13 @@ public class PlayerController : PhysicsObject
     void Awake()
     {
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        rigidBody2D = GetComponent<Rigidbody2D>();
         //animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        ComputeVelocity();
+        CalcMovement();
         FireTongue();
     }
 
@@ -41,13 +45,14 @@ public class PlayerController : PhysicsObject
             tongue_length = new Vector3(3.8f, 0.0f, 0.0f);
         }
         Quaternion rotation = Quaternion.LookRotation(Vector3.right);
-        if( Input.GetKeyDown(KeyCode.T) ){
-            GameObject tongue_instance = (GameObject) Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
-            Destroy(tongue_instance,1.0f);
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameObject tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
+            Destroy(tongue_instance, 1.0f);
         }
     }
 
-    private void ComputeVelocity()
+    private void CalcMovement()
     {
         Vector2 move = Vector2.zero;
 
@@ -55,7 +60,8 @@ public class PlayerController : PhysicsObject
 
         if (Input.GetButtonDown("Jump"))
         {
-            velocity.y = jumpSpeed;
+            //velocity.y = jumpSpeed;
+            rigidBody2D.AddForce(new Vector2(0f, jumpSpeed), ForceMode2D.Impulse);
         }
 
         if (move.x > 0f)
@@ -70,7 +76,9 @@ public class PlayerController : PhysicsObject
         //animator.SetBool("grounded", grounded);
         //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-        targetVelocity = move * maxSpeed;
+        rigidBody2D.AddForce(move * maxSpeed, ForceMode2D.Force);
+        //if(!hit)
+        //targetVelocity = move * maxSpeed;
     }
 
     public void Damage()
@@ -83,6 +91,28 @@ public class PlayerController : PhysicsObject
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void Damage(Collision2D collision)
+    {
+        if (!hit)
+        {
+            ContactPoint2D contactPoint = collision.GetContact(0);
+            Vector2 playerPosition = this.transform.position;
+            Vector2 dir = contactPoint.point - playerPosition;
+            dir = -dir.normalized;
+            rigidBody2D.AddForce(dir * force, ForceMode2D.Impulse);
+            StartCoroutine(ApplyKnockback(dir));
+            this.Damage();
+        }
+
+    }
+
+    IEnumerator ApplyKnockback(Vector2 dir)
+    {
+        hit = true;
+        yield return new WaitForSeconds(0.5f);
+        hit = false;
     }
 }
 

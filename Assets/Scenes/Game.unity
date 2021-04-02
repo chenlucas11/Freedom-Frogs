@@ -450,7 +450,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0027836561, y: -1.0470743}
+  m_Offset: {x: 0.011734605, y: -1.0470743}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -461,7 +461,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.218993, y: 0.3037212}
+  m_Size: {x: 1.8788569, y: 0.3037212}
   m_EdgeRadius: 0
 --- !u!1 &320945497
 GameObject:
@@ -496,12 +496,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5d031cf7a673d4f812edbe6c1ce3d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.5
-  gravityModifier: 2
+  hit: 0
   lives: 3
-  maxSpeed: 5
+  maxSpeed: 2
   jumpSpeed: 10
   tongue: {fileID: 1966187485918001605, guid: 71557cf2862a74b429e170dddd8df9f4, type: 3}
+  force: 7
 --- !u!212 &320945499
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -664,14 +664,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320945497}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -1261,7 +1261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.3271
+      value: 3.3957045
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1269,7 +1269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6434999
+      value: -2.1778
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2053,9 +2053,9 @@ MonoBehaviour:
   restartText: {fileID: 603513749}
   livesImg: {fileID: 1541816842}
   liveSprites:
-  - {fileID: 21300000, guid: 48f655868bab1b44d9752965f0e4eee6, type: 3}
-  - {fileID: 21300000, guid: 9d03fd9d13525d24692710632f026baf, type: 3}
-  - {fileID: 21300000, guid: 015b9691475f1cb44994f985aa60331c, type: 3}
+  - {fileID: 21300000, guid: f1243d0339320a040ade7b0cb514de5e, type: 3}
+  - {fileID: 21300000, guid: 30cedb2c48e5b0844ad133e7e316f70d, type: 3}
+  - {fileID: 21300000, guid: 08e62bb18c89a9d40a3a28850487b07b, type: 3}
   - {fileID: 21300000, guid: 5dcce58149aca564a8efbd33dc44512e, type: 3}
 --- !u!114 &1258191067
 MonoBehaviour:
@@ -3002,11 +3002,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 86.02786
+      value: 90.51852
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.740001
+      value: -6.4941
       objectReference: {fileID: 0}
     - target: {fileID: 8446914269280286373, guid: d6b3d38be0acf1a44ab8df37fbef94e3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3168,7 +3168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6399221106277955221, guid: c2464425de22e164885d3b6e8e356b9d, type: 3}
       propertyPath: m_BodyType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6399221106277955221, guid: c2464425de22e164885d3b6e8e356b9d, type: 3}
       propertyPath: m_GravityScale
@@ -3183,6 +3183,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 127148623}
     m_Modifications:
+    - target: {fileID: -8466562730090650074, guid: 90a0ee744593d2f49a2e334d9f6e2083, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6507432342526065333, guid: 90a0ee744593d2f49a2e334d9f6e2083, type: 3}
       propertyPath: m_Name
       value: Bird

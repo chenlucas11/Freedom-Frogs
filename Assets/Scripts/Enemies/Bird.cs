@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bird : PhysicsObject
+public class Bird : MonoBehaviour
 {
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private Vector3 distance = new Vector3(17, 0, 0);
@@ -14,7 +14,7 @@ public class Bird : PhysicsObject
 
     private void Awake()
     {
-        gravityModifier = 0f;
+        
     }
 
     // Start is called before the first frame update

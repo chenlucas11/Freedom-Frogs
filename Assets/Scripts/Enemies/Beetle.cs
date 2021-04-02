@@ -5,7 +5,7 @@ using UnityEngine;
 public class Beetle : PhysicsObject
 {
     private bool flipped = false;
-
+    [SerializeField] private Sprite[] beetleSprites;
 
     private void Start()
     {
@@ -15,24 +15,20 @@ public class Beetle : PhysicsObject
     // Update is called once per frame
     void Update()
     {
-
+        if (flipped)
+        {
+            targetVelocity = Vector2.zero;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController player = other.transform.GetComponent<PlayerController>();
-
-            if (player != null)
-                player.Damage();
-
-            if (flipped)
-            {
-                Destroy(this.gameObject);
-            }
+            PlayerController player = collision.transform.GetComponent<PlayerController>();
+            player.Damage(collision);
         }
-        else if (other.CompareTag("Tongue"))
+        else if (collision.gameObject.CompareTag("Tongue"))
         {
             Debug.Log("Tongue hit");
             if (flipped)
@@ -44,11 +40,16 @@ public class Beetle : PhysicsObject
                 FlipOver();
             }
         }
-        else if (other.CompareTag("PlayerBottom"))
+        else if (collision.gameObject.CompareTag("PlayerBottom"))
         {
             if (flipped)
             {
                 Destroy(this.gameObject);
+            }
+            else
+            {
+                PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
+                player.Damage(collision);
             }
         }
     }
@@ -58,11 +59,13 @@ public class Beetle : PhysicsObject
         if (!flipped)
         {
             this.transform.localScale = new Vector2(1, -1);
+            this.GetComponent<SpriteRenderer>().sprite = beetleSprites[0];
             flipped = true;
         }
         else
         {
             this.transform.localScale = new Vector2(1, 1);
+            this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
             flipped = false;
         }
     }
