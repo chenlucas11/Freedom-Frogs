@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 5;
     [SerializeField] private float jumpSpeed = 8;
     [SerializeField] private GameObject tongue;
+    [SerializeField] private GameObject projectile;
     [SerializeField] private float force = 7;
+    private float projectileSpeed = 7;
     private Rigidbody2D rigidBody2D;
 
     
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     {
         CalcMovement();
         FireTongue();
+        ShootProjectile();
     }
 
     private void FireTongue()
@@ -46,6 +49,23 @@ public class PlayerController : MonoBehaviour
         {
             GameObject tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
             Destroy(tongue_instance, 1.0f);
+        }
+    }
+
+    private void ShootProjectile()
+    {
+        if( Input.GetKeyDown(KeyCode.R) ){
+            Vector3 projectile_length;
+            if (this.transform.localScale[0] < 1)
+            {
+                projectile_length = new Vector3(-1.5f, 0.0f, 0.0f);
+            }
+            else
+            {
+                projectile_length = new Vector3(1.5f, 0.0f, 0.0f);
+            }
+            Instantiate(projectile, transform.position + projectile_length, Quaternion.identity);
+            //Destroy(projectile_instance, 1.0f);
         }
     }
 
