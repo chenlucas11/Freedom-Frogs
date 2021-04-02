@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public bool hit = false;
     [SerializeField] private int lives = 3;
-    [SerializeField] private float speed = 3;
+    [SerializeField] private float speed = 5;
     private float groundSpeed;
     private float airSpeed;
     [SerializeField] private float jumpSpeed = 10;
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             //velocity.y = jumpSpeed;
-            rigidBody2D.AddForce(new Vector2(0f, jumpSpeed), ForceMode2D.Impulse);
+            rigidBody2D.AddForce(new Vector2(move.x * speed, jumpSpeed), ForceMode2D.Impulse);
         }
 
         if (move.x > 0f)
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         //animator.SetBool("grounded", grounded);
         //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-        rigidBody2D.AddForce(move * speed, ForceMode2D.Force);
+        //rigidBody2D.AddForce(move * speed, ForceMode2D.Force);
         //if(!hit)
         //targetVelocity = move * maxSpeed;
     }
@@ -119,12 +119,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        speed = airSpeed;
+        
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        speed = groundSpeed;
+        
     }
 }
 
