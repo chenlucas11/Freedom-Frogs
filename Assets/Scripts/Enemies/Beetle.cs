@@ -23,13 +23,34 @@ public class Beetle : PhysicsObject
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        /*
+        if (collision.gameObject.CompareTag("PlayerBottom"))
+        {
+            Debug.Log("PlayerBottom Hit");
+            Debug.Log(flipped);
+            if (flipped)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Debug.Log("Player hit");
+                PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
+                player.Knockback(collision);
+                player.Damage();
+            }
+        }*/
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerController player = collision.transform.GetComponent<PlayerController>();
             player.Knockback(collision);
             player.Damage();
         }
-        else if (collision.gameObject.CompareTag("Tongue"))
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Tongue"))
         {
             Debug.Log("Tongue hit");
             if (flipped)
@@ -41,16 +62,19 @@ public class Beetle : PhysicsObject
                 FlipOver();
             }
         }
-        else if (collision.gameObject.CompareTag("PlayerBottom"))
+        else if (collision.CompareTag("PlayerBottom"))
         {
+            Debug.Log("PlayerBottom Hit");
+            Debug.Log(flipped);
             if (flipped)
             {
                 Destroy(this.gameObject);
             }
             else
             {
+                Debug.Log("Player hit");
                 PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
-                player.Knockback(collision);
+                //player.Knockback(collision);
                 player.Damage();
             }
         }
@@ -64,12 +88,12 @@ public class Beetle : PhysicsObject
             this.GetComponent<SpriteRenderer>().sprite = beetleSprites[0];
             flipped = true;
         }
-        else
-        {
-            this.transform.localScale = new Vector2(1, 1);
-            this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
-            flipped = false;
-        }
+        //else
+        //{
+          //  this.transform.localScale = new Vector2(1, 1);
+            //this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
+            //flipped = false;
+        //}
     }
 
     IEnumerator BeetleRoutine()

@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     public bool hit = false;
     [SerializeField] private int lives = 3;
-    [SerializeField] private float maxSpeed = 2;
+    [SerializeField] private float speed = 3;
+    private float groundSpeed;
+    private float airSpeed;
     [SerializeField] private float jumpSpeed = 10;
     [SerializeField] private GameObject tongue;
     [SerializeField] private float force = 7;
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
     {
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         rigidBody2D = GetComponent<Rigidbody2D>();
+        groundSpeed = speed;
+        airSpeed = speed / 2;
         //animator = GetComponent<Animator>();
     }
 
@@ -76,7 +80,7 @@ public class PlayerController : MonoBehaviour
         //animator.SetBool("grounded", grounded);
         //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-        rigidBody2D.AddForce(move * maxSpeed, ForceMode2D.Force);
+        rigidBody2D.AddForce(move * speed, ForceMode2D.Force);
         //if(!hit)
         //targetVelocity = move * maxSpeed;
     }
@@ -111,6 +115,16 @@ public class PlayerController : MonoBehaviour
         hit = true;
         yield return new WaitForSeconds(0.5f);
         hit = false;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        speed = airSpeed;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        speed = groundSpeed;
     }
 }
 
