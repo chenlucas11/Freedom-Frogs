@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.3587269, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -583,6 +583,7 @@ MonoBehaviour:
   speed: 5
   jumpSpeed: 8
   tongue: {fileID: 1966187485918001605, guid: 71557cf2862a74b429e170dddd8df9f4, type: 3}
+  projectile: {fileID: 1966187485918001605, guid: eefde9d8457bf44e18cdb414544109cc, type: 3}
   force: 7
 --- !u!212 &320945499
 SpriteRenderer:

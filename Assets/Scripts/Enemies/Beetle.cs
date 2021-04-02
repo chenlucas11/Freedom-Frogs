@@ -62,6 +62,19 @@ public class Beetle : PhysicsObject
                 FlipOver();
             }
         }
+        else if (collision.CompareTag("Projectile"))
+        {
+            Debug.Log("Projectile hit");
+            if (flipped)
+            {
+                Destroy(this.gameObject);
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Destroy(collision.gameObject);   
+            }
+        }
         else if (collision.CompareTag("PlayerBottom"))
         {
             Debug.Log("PlayerBottom Hit");
