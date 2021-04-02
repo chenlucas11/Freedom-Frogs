@@ -7,17 +7,12 @@ public class PlayerController : MonoBehaviour
     public bool hit = false;
     [SerializeField] private int lives = 3;
     [SerializeField] private float speed = 5;
-    private float groundSpeed;
-    private float airSpeed;
-    [SerializeField] private float jumpSpeed = 10;
+    [SerializeField] private float jumpSpeed = 8;
     [SerializeField] private GameObject tongue;
     [SerializeField] private float force = 7;
     private Rigidbody2D rigidBody2D;
 
-    // Music Pieces
-    //[SerializeField] private bool pieceOneCollected = false;
-    //[SerializeField] private bool pieceTwoCollected = false;
-    //[SerializeField] private bool pieceThreeCollected = false;
+    
 
     private UIManager uIManager;
     //private Animator animator;
@@ -26,8 +21,6 @@ public class PlayerController : MonoBehaviour
     {
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         rigidBody2D = GetComponent<Rigidbody2D>();
-        groundSpeed = speed;
-        airSpeed = speed / 2;
         //animator = GetComponent<Animator>();
     }
 
@@ -64,7 +57,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            //velocity.y = jumpSpeed;
             rigidBody2D.AddForce(new Vector2(move.x * speed, jumpSpeed), ForceMode2D.Impulse);
         }
 
@@ -76,13 +68,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector2(-1, 1);
         }
-
-        //animator.SetBool("grounded", grounded);
-        //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
-
-        //rigidBody2D.AddForce(move * speed, ForceMode2D.Force);
-        //if(!hit)
-        //targetVelocity = move * maxSpeed;
     }
 
     public void Damage()
@@ -115,16 +100,6 @@ public class PlayerController : MonoBehaviour
         hit = true;
         yield return new WaitForSeconds(0.5f);
         hit = false;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        
     }
 }
 

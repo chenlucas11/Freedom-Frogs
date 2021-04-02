@@ -7,10 +7,13 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private bool _isGameOver;
 
+    // Music Pieces
+    [SerializeField] private int piecesCollected;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        piecesCollected = 0;
     }
 
     // Update is called once per frame
@@ -25,5 +28,10 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         _isGameOver = true;
+    }
+
+    public void PieceCollected()
+    {
+        piecesCollected++;
     }
 }
