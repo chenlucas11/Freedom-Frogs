@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Beetle : PhysicsObject
+public class Beetle : EnemyPhysics
 {
     private bool flipped = false;
     [SerializeField] private Sprite[] beetleSprites;

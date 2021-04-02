@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fish : PhysicsObject
+public class Fish : EnemyPhysics
 {
     [SerializeField] private float jumpSpeed = 15.0f;
     private bool falling = false;

@@ -11,28 +11,36 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject tongue;
     [SerializeField] private GameObject projectile;
     [SerializeField] private float force = 7;
-    [SerializeField] private Vector3 tongue_length = new Vector3(2.5f, 0.0f, 0.0f);
-    [SerializeField] private Vector3 projectileOffset = new Vector3(1.5f, 0.0f, 0.0f);
+    [SerializeField] private Vector3 tongue_length = new Vector3(2.5f, 0, 0);
+    [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);
     private Rigidbody2D rigidBody2D;
     private GameObject tongue_instance;
-
-    private float canAttack = -1f;
+    private int currentBeat;
     [SerializeField] private float attackRate = 0.5f;
+    private float canAttack = -1f;
+    
 
-
+    [SerializeField] private Sprite[] idleSprites;
+    [SerializeField] private Sprite[] jumpSprites;
+    [SerializeField] private Sprite[] tongueAttackSprites;
+    [SerializeField] private Sprite[] projectileAttackSprites;
+    
     private UIManager uIManager;
+    private SpriteRenderer playerSprite;
     //private Animator animator;
 
     void Awake()
     {
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         rigidBody2D = GetComponent<Rigidbody2D>();
+        playerSprite = GetComponent<SpriteRenderer>();
         //animator = GetComponent<Animator>();
     }
 
     void Start()
     {
         canAttack = -1f;
+        currentBeat = 2;
     }
 
     void Update()
@@ -51,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private void FireTongue()
     {
         canAttack = Time.time + attackRate;
+        playerSprite.sprite = tongueAttackSprites[currentBeat];
         if (this.transform.localScale[0] < 1)
         {
             tongue_instance = (GameObject)Instantiate(tongue, transform.position - tongue_length, Quaternion.identity, transform);
@@ -59,12 +68,13 @@ public class PlayerController : MonoBehaviour
         {
             tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
         }
-        Destroy(tongue_instance, 0.5f);
+        Destroy(tongue_instance, 0.2f);
     }
 
     private void ShootProjectile()
     {
         canAttack = Time.time + attackRate;
+        playerSprite.sprite = projectileAttackSprites[currentBeat];
         if (this.transform.localScale[0] < 1)
         {
             Instantiate(projectile, transform.position - projectileOffset, Quaternion.identity);
@@ -82,6 +92,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
+            playerSprite.sprite = jumpSprites[currentBeat];
+        }
+
+        if (rigidBody2D.velocity.y < 0)
+        {
+            playerSprite.sprite = idleSprites[currentBeat];
         }
 
         if (horizontalMovement > 0f)
@@ -92,6 +108,8 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector2(-1, 1);
         }
+
+
     }
 
     public void Damage()
@@ -115,14 +133,23 @@ public class PlayerController : MonoBehaviour
             Vector2 dir = contactPoint.point - playerPosition;
             dir = -dir.normalized;
             rigidBody2D.AddForce(dir * force, ForceMode2D.Impulse);
-            StartCoroutine(ApplyKnockback(dir));
+            StartCoroutine(ApplyFlash());
         }
     }
 
-    IEnumerator ApplyKnockback(Vector2 dir)
+    IEnumerator ApplyFlash()
     {
         hit = true;
-        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < 4; i++)
+        {
+            playerSprite.sprite = idleSprites[4];
+            yield return new WaitForSeconds(0.1f);
+            playerSprite.sprite = idleSprites[currentBeat];
+            yield return new WaitForSeconds(0.1f);
+        }
+        playerSprite.sprite = idleSprites[4];
+        yield return new WaitForSeconds(0.1f);
+        playerSprite.sprite = idleSprites[currentBeat];
         hit = false;
     }
 }
