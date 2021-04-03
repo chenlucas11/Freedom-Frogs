@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackRate = 0.5f;
     private float canAttack = -1f;
     private bool hasJumped = false;
+    private int counter = 0;
+    private float horizontalForce = 0;
+    [SerializeField] private float horizontalJumpIncrement = 0.3f;
+    [SerializeField] private int horizontalJumpNum = 0;
 
     // Music Pieces
     [SerializeField] private int piecesCollected;
@@ -30,7 +34,8 @@ public class PlayerController : MonoBehaviour
 
     private UIManager uIManager;
     private SpriteRenderer playerSprite;
-    private int counter = 0;
+    
+
     //private Animator animator;
 
     void Awake()
@@ -44,18 +49,21 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canAttack = -1f;
-        currentBeat = 0;
+        currentBeat = 1;
         piecesCollected = 0;
     }
 
     void Update()
     {
-        counter++;
-        if (counter >= 120)
+        if(piecesCollected >= 1)
         {
-            counter = 0;
-            currentBeat++;
-            currentBeat %= 4;
+            counter++;
+            if (counter >= 180)
+            {
+                counter = 0;
+                currentBeat++;
+                currentBeat %= 4;
+            }
         }
         CalcMovement();
         if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack && piecesCollected >= 2)
@@ -109,19 +117,40 @@ public class PlayerController : MonoBehaviour
         if (piecesCollected >= 1)
         {
             playerSprite.sprite = idleSprites[currentBeat];
+
+            if (horizontalJumpNum < 3)
+            {
+                if (Input.GetKeyDown("d"))
+                {
+                    horizontalForce += horizontalJumpIncrement;
+                    horizontalJumpNum++;
+                }
+                else if (Input.GetKeyDown("a"))
+                {
+                    horizontalForce -= horizontalJumpIncrement;
+                    horizontalJumpNum++;
+                }
+            }
+
+            if (currentBeat == 0 && !hasJumped)
+            {
+                rigidBody2D.AddForce(new Vector2(horizontalForce * speed, jumpSpeed), ForceMode2D.Impulse);
+                playerSprite.sprite = jumpSprites[currentBeat];
+                hasJumped = true;
+                horizontalForce = 0;
+                horizontalJumpNum = 0;
+            }
+            else if (currentBeat == 3 && hasJumped)
+                hasJumped = false;
+
+            // Controllable jump
             if (Input.GetButtonDown("Jump"))
             {
                 rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
                 playerSprite.sprite = jumpSprites[currentBeat];
             }
-            else if (currentBeat == 0 && !hasJumped)
-            {
-                rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
-                playerSprite.sprite = jumpSprites[currentBeat];
-                hasJumped = true;
-            }
-            else if (currentBeat == 3 && hasJumped)
-                hasJumped = false;
+
+
 
             if (rigidBody2D.velocity.y <= 0)
             {
