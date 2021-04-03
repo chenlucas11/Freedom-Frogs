@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
     private float horizontalForce = 0;
     [SerializeField] private float horizontalJumpIncrement = 0.3f;
     [SerializeField] private int horizontalJumpNum = 0;
-
-    // Music Pieces
     [SerializeField] private int piecesCollected;
 
     [SerializeField] private Sprite[] idleSprites;
@@ -115,11 +113,13 @@ public class PlayerController : MonoBehaviour
                 {
                     horizontalForce += horizontalJumpIncrement;
                     horizontalJumpNum++;
+                    uIManager.UpdateArrows(horizontalJumpNum, 2);
                 }
                 else if (Input.GetKeyDown("a"))
                 {
                     horizontalForce -= horizontalJumpIncrement;
                     horizontalJumpNum++;
+                    uIManager.UpdateArrows(horizontalJumpNum, 1);
                 }
             }
 
@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour
                 hasJumped = true;
                 horizontalForce = 0;
                 horizontalJumpNum = 0;
+                uIManager.UpdateArrows(horizontalJumpNum, 0);
             }
             else if (conductor.beatNum % 4 == 3 && hasJumped)
                 hasJumped = false;

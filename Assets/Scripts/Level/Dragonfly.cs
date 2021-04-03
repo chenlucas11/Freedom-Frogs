@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dragonfly : MonoBehaviour
 {
     [SerializeField] private float speed = 1.5f;
-    [SerializeField] private Vector3 distance = new Vector3(17, 0, 0);
+    [SerializeField] private Vector3 distance = new Vector3(26, 0, 0);
     private Vector3 currentTarget;
     private bool facingRight;
 
