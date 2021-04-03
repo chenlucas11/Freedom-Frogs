@@ -15,11 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);
     private Rigidbody2D rigidBody2D;
     private GameObject tongue_instance;
-    [SerializeField] private int currentBeat;
     [SerializeField] private float attackRate = 0.5f;
     private float canAttack = -1f;
     private bool hasJumped = false;
-    private int counter = 0;
     private float horizontalForce = 0;
     [SerializeField] private float horizontalJumpIncrement = 0.3f;
     [SerializeField] private int horizontalJumpNum = 0;
@@ -34,6 +32,8 @@ public class PlayerController : MonoBehaviour
 
     private UIManager uIManager;
     private SpriteRenderer playerSprite;
+    private Conductor conductor;
+    private AudioManager audioManager;
     
 
     //private Animator animator;
@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        conductor = GameObject.Find("Conductor").GetComponent<Conductor>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         //animator = GetComponent<Animator>();
@@ -49,22 +51,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canAttack = -1f;
-        currentBeat = 1;
         piecesCollected = 0;
     }
 
     void Update()
     {
-        if(piecesCollected >= 1)
-        {
-            counter++;
-            if (counter >= 180)
-            {
-                counter = 0;
-                currentBeat++;
-                currentBeat %= 4;
-            }
-        }
         CalcMovement();
         if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack && piecesCollected >= 2)
         {
@@ -79,7 +70,7 @@ public class PlayerController : MonoBehaviour
     private void FireTongue()
     {
         canAttack = Time.time + attackRate;
-        playerSprite.sprite = tongueAttackSprites[currentBeat];
+        playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
         if (this.transform.localScale[0] < 1)
         {
             tongue_instance = (GameObject)Instantiate(tongue, transform.position - tongue_length, Quaternion.identity, transform);
@@ -94,7 +85,7 @@ public class PlayerController : MonoBehaviour
     private void ShootProjectile()
     {
         canAttack = Time.time + attackRate;
-        playerSprite.sprite = projectileAttackSprites[currentBeat];
+        playerSprite.sprite = projectileAttackSprites[conductor.beatNum % 4];
         if (this.transform.localScale[0] < 1)
         {
             Instantiate(projectile, transform.position - projectileOffset, Quaternion.identity);
@@ -116,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
         if (piecesCollected >= 1)
         {
-            playerSprite.sprite = idleSprites[currentBeat];
+            playerSprite.sprite = idleSprites[conductor.beatNum % 4];
 
             if (horizontalJumpNum < 3)
             {
@@ -132,33 +123,33 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (currentBeat == 0 && !hasJumped)
+            if (conductor.beatNum % 4 == 0 && !hasJumped)
             {
                 rigidBody2D.AddForce(new Vector2(horizontalForce * speed, jumpSpeed), ForceMode2D.Impulse);
-                playerSprite.sprite = jumpSprites[currentBeat];
+                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
                 hasJumped = true;
                 horizontalForce = 0;
                 horizontalJumpNum = 0;
             }
-            else if (currentBeat == 3 && hasJumped)
+            else if (conductor.beatNum % 4 == 3 && hasJumped)
                 hasJumped = false;
 
             // Controllable jump
             if (Input.GetButtonDown("Jump"))
             {
                 rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
-                playerSprite.sprite = jumpSprites[currentBeat];
+                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
             }
 
 
 
             if (rigidBody2D.velocity.y <= 0)
             {
-                playerSprite.sprite = idleSprites[currentBeat];
+                playerSprite.sprite = idleSprites[conductor.beatNum % 4];
             }
             else
             {
-                playerSprite.sprite = jumpSprites[currentBeat];
+                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
             }
         }
 
@@ -204,12 +195,12 @@ public class PlayerController : MonoBehaviour
         {
             playerSprite.sprite = idleSprites[4];
             yield return new WaitForSeconds(0.1f);
-            playerSprite.sprite = idleSprites[currentBeat];
+            playerSprite.sprite = idleSprites[conductor.beatNum % 4];
             yield return new WaitForSeconds(0.1f);
         }
         playerSprite.sprite = idleSprites[4];
         yield return new WaitForSeconds(0.1f);
-        playerSprite.sprite = idleSprites[currentBeat];
+        playerSprite.sprite = idleSprites[conductor.beatNum % 4];
         hit = false;
     }
 
@@ -220,6 +211,7 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             piecesCollected++;
             uIManager.UpdateMusicPieces(piecesCollected);
+            audioManager.UpdateAudio(piecesCollected);
         }
     }
 }
