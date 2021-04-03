@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Conductor : MonoBehaviour
+public class StinkBeetle : EnemyPhysics
 {
-    [SerializeField] private int bpm = 120;
-
     // Start is called before the first frame update
     void Start()
     {

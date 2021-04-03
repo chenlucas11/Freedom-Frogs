@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentBeat;
     [SerializeField] private float attackRate = 0.5f;
     private float canAttack = -1f;
+    private bool hasJumped = false;
 
     // Music Pieces
     [SerializeField] private int piecesCollected;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private UIManager uIManager;
     private SpriteRenderer playerSprite;
+    private int counter = 0;
     //private Animator animator;
 
     void Awake()
@@ -48,6 +50,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        counter++;
+        if (counter >= 120)
+        {
+            counter = 0;
+            currentBeat++;
+            currentBeat %= 4;
+        }
         CalcMovement();
         if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack && piecesCollected >= 2)
         {
@@ -92,20 +101,36 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
 
-        if(piecesCollected == 0)
+        if (piecesCollected == 0)
         {
             transform.Translate(new Vector2(horizontalMovement * speed * Time.deltaTime, 0));
         }
 
-        if (Input.GetButtonDown("Jump") && piecesCollected >= 1)
-        {
-            rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
-            playerSprite.sprite = jumpSprites[currentBeat];
-        }
-        
-        if (rigidBody2D.velocity.y < 0)
+        if (piecesCollected >= 1)
         {
             playerSprite.sprite = idleSprites[currentBeat];
+            if (Input.GetButtonDown("Jump"))
+            {
+                rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
+                playerSprite.sprite = jumpSprites[currentBeat];
+            }
+            else if (currentBeat == 0 && !hasJumped)
+            {
+                rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
+                playerSprite.sprite = jumpSprites[currentBeat];
+                hasJumped = true;
+            }
+            else if (currentBeat == 3 && hasJumped)
+                hasJumped = false;
+
+            if (rigidBody2D.velocity.y <= 0)
+            {
+                playerSprite.sprite = idleSprites[currentBeat];
+            }
+            else
+            {
+                playerSprite.sprite = jumpSprites[currentBeat];
+            }
         }
 
         if (horizontalMovement > 0f)
