@@ -5,21 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private bool _isGameOver;
-
-    // Music Pieces
-    [SerializeField] private int piecesCollected;
-
+    [SerializeField] private bool isGameOver;
     // Start is called before the first frame update
     void Start()
     {
-        piecesCollected = 0;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
+        if (Input.GetKeyDown(KeyCode.R) && isGameOver == true)
         {
             SceneManager.LoadScene(1); // Current Game Scene
         }
@@ -27,11 +23,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        _isGameOver = true;
-    }
-
-    public void PieceCollected()
-    {
-        piecesCollected++;
+        isGameOver = true;
     }
 }

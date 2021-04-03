@@ -18,13 +18,15 @@ public class PlayerController : MonoBehaviour
     private int currentBeat;
     [SerializeField] private float attackRate = 0.5f;
     private float canAttack = -1f;
-    
+
+    // Music Pieces
+    [SerializeField] private int piecesCollected;
 
     [SerializeField] private Sprite[] idleSprites;
     [SerializeField] private Sprite[] jumpSprites;
     [SerializeField] private Sprite[] tongueAttackSprites;
     [SerializeField] private Sprite[] projectileAttackSprites;
-    
+
     private UIManager uIManager;
     private SpriteRenderer playerSprite;
     //private Animator animator;
@@ -41,16 +43,17 @@ public class PlayerController : MonoBehaviour
     {
         canAttack = -1f;
         currentBeat = 2;
+        piecesCollected = 0;
     }
 
     void Update()
     {
         CalcMovement();
-        if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack)
+        if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack && piecesCollected >= 2)
         {
             FireTongue();
         }
-        else if (Input.GetKeyDown(KeyCode.R) && Time.time > canAttack)
+        else if (Input.GetKeyDown(KeyCode.R) && Time.time > canAttack && piecesCollected >= 3)
         {
             ShootProjectile();
         }
@@ -89,12 +92,17 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Jump"))
+        if(piecesCollected == 0)
+        {
+            transform.Translate(new Vector2(horizontalMovement * speed * Time.deltaTime, 0));
+        }
+
+        if (Input.GetButtonDown("Jump") && piecesCollected >= 1)
         {
             rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
             playerSprite.sprite = jumpSprites[currentBeat];
         }
-
+        
         if (rigidBody2D.velocity.y < 0)
         {
             playerSprite.sprite = idleSprites[currentBeat];
@@ -108,8 +116,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector2(-1, 1);
         }
-
-
     }
 
     public void Damage()
@@ -151,6 +157,16 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         playerSprite.sprite = idleSprites[currentBeat];
         hit = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("MusicPiece"))
+        {
+            Destroy(other.gameObject);
+            piecesCollected++;
+            uIManager.UpdateMusicPieces(piecesCollected);
+        }
     }
 }
 

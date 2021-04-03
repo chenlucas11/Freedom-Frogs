@@ -53,7 +53,7 @@ public class Dragonfly : MonoBehaviour
         target = null;
     }
 
-   
+
     private void Move()
     {
         transform.position = Vector2.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);

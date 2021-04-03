@@ -14,7 +14,7 @@ public class Bird : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class Bird : MonoBehaviour
             Move();
         else
             UpdateTarget();
-        
+
     }
 
     private void Move()
@@ -42,7 +42,7 @@ public class Bird : MonoBehaviour
 
     private void UpdateTarget()
     {
-        if(Time.time - delayStart > delayTimer)
+        if (Time.time - delayStart > delayTimer)
         {
             if (facingRight)
             {

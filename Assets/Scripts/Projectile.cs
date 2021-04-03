@@ -9,8 +9,8 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerController>();;
-        Destroy(this.gameObject,1.0f);
+        player = GameObject.Find("Player").GetComponent<PlayerController>(); ;
+        Destroy(this.gameObject, 1.0f);
     }
 
     // Update is called once per frame

@@ -72,7 +72,7 @@ public class Beetle : EnemyPhysics
             }
             else
             {
-                Destroy(collision.gameObject);   
+                Destroy(collision.gameObject);
             }
         }
         else if (collision.CompareTag("PlayerBottom"))
@@ -103,9 +103,9 @@ public class Beetle : EnemyPhysics
         }
         //else
         //{
-          //  this.transform.localScale = new Vector2(1, 1);
-            //this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
-            //flipped = false;
+        //  this.transform.localScale = new Vector2(1, 1);
+        //this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
+        //flipped = false;
         //}
     }
 
