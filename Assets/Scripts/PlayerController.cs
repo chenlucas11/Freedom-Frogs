@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);
     private Rigidbody2D rigidBody2D;
     private GameObject tongue_instance;
-    private int currentBeat;
+    [SerializeField] private int currentBeat;
     [SerializeField] private float attackRate = 0.5f;
     private float canAttack = -1f;
 
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canAttack = -1f;
-        currentBeat = 2;
+        currentBeat = 0;
         piecesCollected = 0;
     }
 
