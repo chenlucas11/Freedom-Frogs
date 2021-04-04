@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
             tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
         }
         StartCoroutine(TongueRoutine());
-        Destroy(tongue_instance, 0.2f);
+        Destroy(tongue_instance, 0.5f);
     }
 
     private void ShootProjectile()
