@@ -31,7 +31,7 @@ public class OpeningScene : MonoBehaviour
     public void NextSlide()
     {
         slideNum++;
-        if (slideNum > 5)
+        if (slideNum >= sceneSprites.Length)
             Skip();
         else
             sceneImg.sprite = sceneSprites[slideNum];

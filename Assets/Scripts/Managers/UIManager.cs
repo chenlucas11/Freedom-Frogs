@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
+    private AudioManager audioManager;
     [SerializeField] private Text finishText;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameOverMenu;
@@ -25,6 +26,7 @@ public class UIManager : MonoBehaviour
         pauseMenu.gameObject.SetActive(false);
         gameOverMenu.gameObject.SetActive(false);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     public void UpdateLives(int currentLives)
@@ -81,6 +83,7 @@ public class UIManager : MonoBehaviour
     private void GameOverSequence()
     {
         gameManager.GameOver();
+        audioManager.UpdateAudio(5);
         gameOverMenu.gameObject.SetActive(true);
     }
 

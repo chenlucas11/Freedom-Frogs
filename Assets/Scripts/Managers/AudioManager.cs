@@ -23,11 +23,23 @@ public class AudioManager : MonoBehaviour
 
     public void UpdateAudio(int piecesCollected)
     {
-        if(piecesCollected > 0 && piecesCollected <= 4)
+        if(piecesCollected > 0 && piecesCollected < 4)
         {
             gameAudio.clip = audioClips[piecesCollected - 1];
             gameAudio.Play();
             conductor.StartSong();
+        }
+        else if(piecesCollected == 4)
+        {
+            gameAudio.clip = audioClips[piecesCollected - 1];
+            gameAudio.Play();
+            gameAudio.loop = false;
+        }
+        // GameOver Audio
+        else if (piecesCollected == 5)
+        {
+            gameAudio.clip = audioClips[piecesCollected - 1];
+            gameAudio.Play();
         }
     }
 }
