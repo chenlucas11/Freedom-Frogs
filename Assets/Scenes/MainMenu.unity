@@ -830,7 +830,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: FREEDOM TOADS
+  m_Text: FREEDOM FROGS
 --- !u!222 &1698848712
 CanvasRenderer:
   m_ObjectHideFlags: 0
