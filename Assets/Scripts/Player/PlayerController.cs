@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private const float collectCD = 5f;
     private float canCollectLife = -1f;
     public bool grounded = true;
+    private bool tongueOut = false;
+    private bool projectileOut = false;
 
     [SerializeField] private Sprite[] idleSprites;
     [SerializeField] private Sprite[] jumpSprites;
@@ -54,16 +56,18 @@ public class PlayerController : MonoBehaviour
     {
         canAttack = -1f;
         piecesCollected = 0;
+        tongueOut = false;
+        projectileOut = false;
     }
 
     void Update()
     {
         CalcMovement();
-        if (Input.GetKeyDown(KeyCode.Q) && Time.time > canAttack && piecesCollected >= 2)
+        if (Input.GetKeyDown(KeyCode.E) && Time.time > canAttack && piecesCollected >= 2)
         {
             FireTongue();
         }
-        else if (Input.GetKeyDown(KeyCode.E) && Time.time > canAttack && piecesCollected >= 3)
+        else if (Input.GetKeyDown(KeyCode.Q) && Time.time > canAttack && piecesCollected >= 3)
         {
             ShootProjectile();
         }
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour
         {
             tongue_instance = (GameObject)Instantiate(tongue, transform.position + tongue_length, Quaternion.identity, transform);
         }
+        StartCoroutine(TongueRoutine());
         Destroy(tongue_instance, 0.2f);
     }
 
@@ -96,6 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(projectile, transform.position + projectileOffset, Quaternion.identity);
         }
+        StartCoroutine(ProjectileRoutine());
     }
 
     private void CalcMovement()
@@ -109,7 +115,10 @@ public class PlayerController : MonoBehaviour
 
         if (piecesCollected >= 1)
         {
-            playerSprite.sprite = idleSprites[conductor.beatNum % 4];
+            if (!tongueOut && !projectileOut)
+            {
+                playerSprite.sprite = idleSprites[conductor.beatNum % 4];
+            }
 
             if (horizontalJumpNum < 3)
             {
@@ -130,7 +139,16 @@ public class PlayerController : MonoBehaviour
             if (conductor.beatNum % 4 == 0 && !hasJumped)
             {
                 rigidBody2D.AddForce(new Vector2(horizontalForce * speed, jumpSpeed), ForceMode2D.Impulse);
-                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
+                if (!tongueOut && !projectileOut)
+                    playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
+                else if (tongueOut)
+                {
+                    playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
+                }
+                else if (projectileOut)
+                {
+                    playerSprite.sprite = projectileAttackSprites[conductor.beatNum % 4];
+                }
                 hasJumped = true;
                 horizontalForce = 0;
                 horizontalJumpNum = 0;
@@ -139,14 +157,24 @@ public class PlayerController : MonoBehaviour
             else if (conductor.beatNum % 4 == 3 && hasJumped)
                 hasJumped = false;
 
-
-            if (grounded)
+            if (!tongueOut && !projectileOut)
             {
-                playerSprite.sprite = idleSprites[conductor.beatNum % 4];
+                if (grounded)
+                {
+                    playerSprite.sprite = idleSprites[conductor.beatNum % 4];
+                }
+                else
+                {
+                    playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
+                }
             }
-            else
+            else if(tongueOut)
             {
-                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
+                playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
+            }
+            else if (projectileOut)
+            {
+                playerSprite.sprite = projectileAttackSprites[conductor.beatNum % 4];
             }
         }
 
@@ -199,24 +227,11 @@ public class PlayerController : MonoBehaviour
     IEnumerator ApplyFlash()
     {
         hit = true;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 15; i++)
         {
             playerSprite.sprite = idleSprites[4];
-            yield return new WaitForSeconds(0.05f);
-            playerSprite.sprite = idleSprites[4];
-            yield return new WaitForSeconds(0.05f);
-            playerSprite.sprite = idleSprites[4];
-            yield return new WaitForSeconds(0.05f);
-            playerSprite.sprite = idleSprites[conductor.beatNum % 4];
             yield return new WaitForSeconds(0.1f);
         }
-        playerSprite.sprite = idleSprites[4];
-        yield return new WaitForSeconds(0.05f);
-        playerSprite.sprite = idleSprites[4];
-        yield return new WaitForSeconds(0.05f);
-        playerSprite.sprite = idleSprites[4];
-        yield return new WaitForSeconds(0.05f);
-        playerSprite.sprite = idleSprites[conductor.beatNum % 4];
         hit = false;
     }
 
@@ -265,6 +280,20 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         grounded = false;
+    }
+
+    IEnumerator TongueRoutine()
+    {
+        tongueOut = true;
+        yield return new WaitForSeconds(attackRate);
+        tongueOut = false;
+    }
+
+    IEnumerator ProjectileRoutine()
+    {
+        projectileOut = true;
+        yield return new WaitForSeconds(attackRate);
+        projectileOut = false;
     }
 }
 
