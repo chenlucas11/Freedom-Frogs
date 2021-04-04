@@ -6,10 +6,13 @@ public class Fish : EnemyPhysics
 {
     [SerializeField] private float jumpSpeed = 15.0f;
     private bool falling = false;
+    [SerializeField] private Sprite deathSprite;
+    private SpriteRenderer fishSprite;
 
     // Start is called before the first frame update
     void Start()
     {
+        fishSprite = GetComponent<SpriteRenderer>();
         velocity.y = jumpSpeed;
     }
 
@@ -34,17 +37,27 @@ public class Fish : EnemyPhysics
         if (other.CompareTag("Player"))
         {
             PlayerController player = other.transform.GetComponent<PlayerController>();
-
-            if (player != null)
-                player.Damage();
+            player.Damage();
+            player.Knockforward();
+            OnFishDeath();
         }
         else if (other.CompareTag("Tongue"))
         {
-            Destroy(this.gameObject);
+            OnFishDeath();
         }
         else if (other.CompareTag("PlayerBottom"))
         {
-            Destroy(this.gameObject);
+            other.transform.parent.GetComponent<PlayerController>().Knockforward();
+            OnFishDeath();
         }
+    }
+
+    private void OnFishDeath()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        this.gravityModifier = 0;
+        this.velocity.y = 0;
+        fishSprite.sprite = deathSprite;
+        Destroy(this.gameObject, 1.0f);
     }
 }

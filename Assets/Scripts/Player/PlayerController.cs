@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpSpeed = 8;
     [SerializeField] private GameObject tongue;
     [SerializeField] private GameObject projectile;
-    [SerializeField] private float force = 7;
+    [SerializeField] private float force = 5;
     [SerializeField] private Vector3 tongue_length = new Vector3(2.5f, 0, 0);
     [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);
     private Rigidbody2D rigidBody2D;
@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float horizontalJumpIncrement = 0.3f;
     [SerializeField] private int horizontalJumpNum = 0;
     [SerializeField] private int piecesCollected;
+    private float canCollectPiece = -1f;
+    private const float collectCD = 5f;
+    private float canCollectLife = -1f;
+    public bool grounded = true;
 
     [SerializeField] private Sprite[] idleSprites;
     [SerializeField] private Sprite[] jumpSprites;
@@ -32,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer playerSprite;
     private Conductor conductor;
     private AudioManager audioManager;
-    
+
 
     //private Animator animator;
 
@@ -55,11 +59,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         CalcMovement();
-        if (Input.GetKeyDown(KeyCode.T) && Time.time > canAttack && piecesCollected >= 2)
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time > canAttack && piecesCollected >= 2)
         {
             FireTongue();
         }
-        else if (Input.GetKeyDown(KeyCode.R) && Time.time > canAttack && piecesCollected >= 3)
+        else if (Input.GetKeyDown(KeyCode.E) && Time.time > canAttack && piecesCollected >= 3)
         {
             ShootProjectile();
         }
@@ -109,13 +113,13 @@ public class PlayerController : MonoBehaviour
 
             if (horizontalJumpNum < 3)
             {
-                if (Input.GetKeyDown("d"))
+                if (Input.GetKeyDown("right") || Input.GetKeyDown(KeyCode.D))
                 {
                     horizontalForce += horizontalJumpIncrement;
                     horizontalJumpNum++;
                     uIManager.UpdateArrows(horizontalJumpNum, 2);
                 }
-                else if (Input.GetKeyDown("a"))
+                else if (Input.GetKeyDown("left") || Input.GetKeyDown(KeyCode.A))
                 {
                     horizontalForce -= horizontalJumpIncrement;
                     horizontalJumpNum++;
@@ -135,16 +139,8 @@ public class PlayerController : MonoBehaviour
             else if (conductor.beatNum % 4 == 3 && hasJumped)
                 hasJumped = false;
 
-            // Controllable jump
-            if (Input.GetButtonDown("Jump"))
-            {
-                rigidBody2D.AddForce(new Vector2(horizontalMovement * speed, jumpSpeed), ForceMode2D.Impulse);
-                playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
-            }
 
-
-
-            if (rigidBody2D.velocity.y <= 0)
+            if (grounded)
             {
                 playerSprite.sprite = idleSprites[conductor.beatNum % 4];
             }
@@ -167,13 +163,13 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         lives--;
-
         uIManager.UpdateLives(lives);
 
         if (lives < 1)
         {
             Destroy(this.gameObject);
         }
+        StartCoroutine(ApplyFlash());
     }
 
     public void Knockback(Collision2D collision)
@@ -184,23 +180,42 @@ public class PlayerController : MonoBehaviour
             Vector2 playerPosition = this.transform.position;
             Vector2 dir = contactPoint.point - playerPosition;
             dir = -dir.normalized;
+            if (dir.x > 0)
+                dir = new Vector2(1, 1);
+            else
+                dir = new Vector2(-1, 1);
             rigidBody2D.AddForce(dir * force, ForceMode2D.Impulse);
-            StartCoroutine(ApplyFlash());
+        }
+    }
+
+    public void Knockforward()
+    {
+        if (!hit)
+        {
+            rigidBody2D.AddForce(new Vector2(1, 1) * force, ForceMode2D.Impulse);
         }
     }
 
     IEnumerator ApplyFlash()
     {
         hit = true;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             playerSprite.sprite = idleSprites[4];
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
+            playerSprite.sprite = idleSprites[4];
+            yield return new WaitForSeconds(0.05f);
+            playerSprite.sprite = idleSprites[4];
+            yield return new WaitForSeconds(0.05f);
             playerSprite.sprite = idleSprites[conductor.beatNum % 4];
             yield return new WaitForSeconds(0.1f);
         }
         playerSprite.sprite = idleSprites[4];
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
+        playerSprite.sprite = idleSprites[4];
+        yield return new WaitForSeconds(0.05f);
+        playerSprite.sprite = idleSprites[4];
+        yield return new WaitForSeconds(0.05f);
         playerSprite.sprite = idleSprites[conductor.beatNum % 4];
         hit = false;
     }
@@ -209,11 +224,47 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("MusicPiece"))
         {
-            Destroy(other.gameObject);
-            piecesCollected++;
-            uIManager.UpdateMusicPieces(piecesCollected);
-            audioManager.UpdateAudio(piecesCollected);
+            if (Time.time > canCollectPiece)
+            {
+                Destroy(other.gameObject);
+                piecesCollected++;
+                uIManager.UpdateMusicPieces(piecesCollected);
+                audioManager.UpdateAudio(piecesCollected);
+                canCollectPiece = Time.time + collectCD;
+            }
+
         }
+        else if (other.CompareTag("Life"))
+        {
+            if (Time.time > canCollectLife)
+            {
+                Destroy(other.gameObject);
+                if (lives < 3)
+                {
+                    lives++;
+                    uIManager.UpdateLives(lives);
+                }
+                canCollectLife = Time.time + collectCD;
+            }
+        }
+        else if (other.CompareTag("Deadzone"))
+        {
+            lives = 0;
+            uIManager.UpdateLives(lives);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        ContactPoint2D contactPoint = collision.GetContact(0);
+        Vector2 playerPosition = this.transform.position;
+        if (playerPosition.y > contactPoint.point.y)
+            grounded = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        grounded = false;
     }
 }
 

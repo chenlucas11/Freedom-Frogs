@@ -7,8 +7,11 @@ public class Beetle : EnemyPhysics
     private bool flipped = false;
     [SerializeField] private Sprite[] beetleSprites;
 
+    private Animator animator;
+
     private void Start()
     {
+        animator = GetComponent<Animator>();
         StartCoroutine(BeetleRoutine());
     }
 
@@ -23,72 +26,53 @@ public class Beetle : EnemyPhysics
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*
-        if (collision.gameObject.CompareTag("PlayerBottom"))
-        {
-            Debug.Log("PlayerBottom Hit");
-            Debug.Log(flipped);
-            if (flipped)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                Debug.Log("Player hit");
-                PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
-                player.Knockback(collision);
-                player.Damage();
-            }
-        }*/
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerController player = collision.transform.GetComponent<PlayerController>();
-            player.Knockback(collision);
             player.Damage();
+            player.Knockback(collision);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Tongue"))
+        if (other.CompareTag("Tongue"))
         {
             Debug.Log("Tongue hit");
             if (flipped)
             {
-                Destroy(this.gameObject);
+                OnBeetleDeath();
             }
             else
             {
                 FlipOver();
             }
         }
-        else if (collision.CompareTag("Projectile"))
+        else if (other.CompareTag("Projectile"))
         {
             Debug.Log("Projectile hit");
             if (flipped)
             {
-                Destroy(this.gameObject);
-                Destroy(collision.gameObject);
+                Destroy(other.gameObject);
+                OnBeetleDeath();
             }
             else
             {
-                Destroy(collision.gameObject);
+                FlipOver();
+                Destroy(other.gameObject);
             }
         }
-        else if (collision.CompareTag("PlayerBottom"))
+        else if (other.CompareTag("PlayerBottom"))
         {
-            Debug.Log("PlayerBottom Hit");
-            Debug.Log(flipped);
+            PlayerController player = other.transform.parent.GetComponent<PlayerController>();
             if (flipped)
             {
-                Destroy(this.gameObject);
+                player.Knockforward();
+                OnBeetleDeath();
             }
             else
             {
-                Debug.Log("Player hit");
-                PlayerController player = collision.transform.parent.GetComponent<PlayerController>();
-                //player.Knockback(collision);
-                player.Damage();
+                player.Knockforward();
             }
         }
     }
@@ -101,12 +85,6 @@ public class Beetle : EnemyPhysics
             this.GetComponent<SpriteRenderer>().sprite = beetleSprites[0];
             flipped = true;
         }
-        //else
-        //{
-        //  this.transform.localScale = new Vector2(1, 1);
-        //this.GetComponent<SpriteRenderer>().sprite = beetleSprites[1];
-        //flipped = false;
-        //}
     }
 
     IEnumerator BeetleRoutine()
@@ -116,7 +94,7 @@ public class Beetle : EnemyPhysics
             targetVelocity = Vector2.right;
             if (flipped)
                 yield break;
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(5.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
             if (flipped)
@@ -125,12 +103,20 @@ public class Beetle : EnemyPhysics
             targetVelocity = Vector2.left;
             if (flipped)
                 yield break;
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(5.0f);
             targetVelocity = Vector2.zero;
             yield return new WaitForSeconds(2.0f);
             if (flipped)
                 yield break;
             this.transform.localScale = new Vector2(-1, 1);
         }
+    }
+
+    private void OnBeetleDeath()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        this.gravityModifier = 0;
+        animator.SetTrigger("OnBeetleDeath");
+        Destroy(this.gameObject, 1.3f);
     }
 }

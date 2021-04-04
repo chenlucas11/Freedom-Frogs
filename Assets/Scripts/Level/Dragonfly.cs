@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dragonfly : MonoBehaviour
 {
     [SerializeField] private float speed = 1.5f;
-    [SerializeField] private Vector3 distance = new Vector3(26, 0, 0);
+    [SerializeField] private Vector3 distance = new Vector3(11, 0, 0);
     private Vector3 currentTarget;
     private bool facingRight;
 
@@ -18,9 +18,16 @@ public class Dragonfly : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        facingRight = true;
-        currentTarget = transform.position + distance;
-        target = null;
+        if (transform.localScale.x > 0)
+        {
+            facingRight = true;
+            currentTarget = transform.position + distance;
+        }
+        else
+        {
+            facingRight = false;
+            currentTarget = transform.position - distance;
+        }
     }
 
     void Update()

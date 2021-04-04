@@ -9,6 +9,9 @@ TagManager:
   - PlayerBottom
   - Projectile
   - MusicPiece
+  - BeetleProj
+  - Life
+  - Deadzone
   layers:
   - Default
   - TransparentFX

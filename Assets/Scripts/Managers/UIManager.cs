@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
-    [SerializeField] private Text restartText;
     [SerializeField] private Text finishText;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private Image livesImg;
     [SerializeField] private Sprite[] liveSprites;
     [SerializeField] private Image musicPieceImg;
@@ -20,8 +21,9 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        restartText.gameObject.SetActive(false);
         finishText.gameObject.SetActive(false);
+        pauseMenu.gameObject.SetActive(false);
+        gameOverMenu.gameObject.SetActive(false);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -64,25 +66,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void GameOverSequence()
+    public void UpdatePauseUI(bool isGamePaused)
+    {
+        if (isGamePaused)
+        {
+            pauseMenu.gameObject.SetActive(true);
+        }
+        else
+        {
+            pauseMenu.gameObject.SetActive(false);
+        }
+    }
+
+    private void GameOverSequence()
     {
         gameManager.GameOver();
-        restartText.gameObject.SetActive(true);
+        gameOverMenu.gameObject.SetActive(true);
     }
 
-    void FinishGameSequence()
+    private void FinishGameSequence()
     {
         finishText.gameObject.SetActive(true);
-    }
-
-    public void PauseGame()
-    {
-        Time.timeScale = 0;
-
-    }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6399221106277955221}
   - component: {fileID: 896033618}
   m_Layer: 0
-  m_Name: MovingPlatform
+  m_Name: Dragonfly
   m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0d26c0243a332a4409201b769d980051, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eddf104e1bc61de458b47fc3bc8ec146, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  distance: {x: 20, y: 0, z: 0}
+  distance: {x: 11, y: 0, z: 0}
   delayTimer: 2
 --- !u!61 &6399221106277955218
 BoxCollider2D:
@@ -114,18 +114,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.004459381, y: -0.16228874}
+  m_Offset: {x: 0.09311676, y: -0.596951}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.59, y: 1.7}
+    oldSize: {x: 4.12, y: 2.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.509735, y: 1.0543939}
+  m_Size: {x: 3.7338867, y: 0.53989506}
   m_EdgeRadius: 0
 --- !u!50 &6399221106277955221
 Rigidbody2D:
@@ -161,16 +161,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0054035187, y: -0.26879883}
+  m_Offset: {x: 0.083301544, y: -0.71233225}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.59, y: 1.7}
+    oldSize: {x: 4.12, y: 2.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.4927483, y: 0.8382523}
+  m_Size: {x: 3.734642, y: 0.34149456}
   m_EdgeRadius: 0

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5939217593840658735}
   - component: {fileID: 5939217593840658728}
   - component: {fileID: 5939217593840658731}
-  - component: {fileID: 5939217593840658730}
-  - component: {fileID: 5939217593840658729}
   - component: {fileID: 5871146189039446908}
+  - component: {fileID: 468170587}
+  - component: {fileID: 7967918110816023514}
   m_Layer: 0
   m_Name: StinkBeetle
   m_TagString: Untagged
@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5939217593840658734}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 22.52, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2fe6ceb15c6ff25439cfd39f3f36d697, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 67f1e8ac248ea6049b0fdf0071a1fc37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -107,112 +107,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!60 &5939217593840658730
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5939217593840658734}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.92, y: 2.35}
-    newSize: {x: 2.92, y: 2.35}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.11, y: -0.385}
-      - {x: 0, y: -0.385}
-      - {x: 0, y: -1.095}
-      - {x: 0.02, y: -1.115}
-      - {x: 0.14999999, y: -1.115}
-      - {x: 0.22, y: -1.0649999}
-      - {x: 0.32999998, y: -1.0649999}
-      - {x: 0.37, y: -0.92499995}
-      - {x: 0.32999998, y: -0.575}
-      - {x: 0.34, y: -0.345}
-      - {x: 0.53, y: -0.545}
-      - {x: 0.53999996, y: -0.715}
-      - {x: 0.55, y: -1.0649999}
-      - {x: 0.56, y: -1.115}
-      - {x: 0.71, y: -1.115}
-      - {x: 0.75, y: -1.105}
-      - {x: 0.84999996, y: -1.035}
-      - {x: 0.94, y: -0.305}
-      - {x: 0.97999996, y: -0.205}
-      - {x: 1.06, y: 0.185}
-      - {x: 1.18, y: 0.235}
-      - {x: 1.37, y: 0.405}
-      - {x: 1.43, y: 0.475}
-      - {x: 1.43, y: 0.515}
-      - {x: 1.42, y: 0.545}
-      - {x: 1.12, y: 0.565}
-      - {x: 1.18, y: 0.625}
-      - {x: 1.26, y: 0.765}
-      - {x: 1.3399999, y: 0.91499996}
-      - {x: 1.31, y: 1.015}
-      - {x: 0.64, y: 0.85499996}
-      - {x: 0.42999998, y: 0.815}
-      - {x: 0.17, y: 0.755}
-      - {x: -0.17999999, y: 0.625}
-      - {x: -0.53999996, y: 0.475}
-      - {x: -0.61, y: 0.635}
-      - {x: -0.69, y: 0.765}
-      - {x: -0.89, y: 0.98499995}
-      - {x: -1.09, y: 1.105}
-      - {x: -1.2099999, y: 1.145}
-      - {x: -1.25, y: 1.145}
-      - {x: -1.27, y: 1.115}
-      - {x: -1.04, y: 0.935}
-      - {x: -1.17, y: 0.945}
-      - {x: -1.28, y: 0.995}
-      - {x: -1.42, y: 0.995}
-      - {x: -1.4399999, y: 0.97499996}
-      - {x: -1.4399999, y: 0.945}
-      - {x: -1.09, y: 0.72499996}
-      - {x: -0.85999995, y: 0.505}
-      - {x: -0.98999995, y: 0.435}
-      - {x: -1.03, y: 0.385}
-      - {x: -1.0799999, y: 0.295}
-      - {x: -1.0699999, y: 0.114999995}
-      - {x: -1.12, y: -0.125}
-      - {x: -1.12, y: -0.21499999}
-      - {x: -0.96, y: -0.475}
-      - {x: -0.79999995, y: -0.475}
-      - {x: -0.56, y: -0.385}
-      - {x: -0.48999998, y: -0.415}
-      - {x: -0.48999998, y: -1.095}
-      - {x: -0.47, y: -1.115}
-      - {x: -0.32, y: -1.115}
-      - {x: -0.22, y: -1.045}
-      - {x: -0.19, y: -1.015}
-      - {x: -0.17999999, y: -0.555}
---- !u!114 &5939217593840658729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5939217593840658734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 689d1aaf820f41e46a64bf7f49c1fade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minGroundNormalY: 0.65
-  gravityModifier: 1.5
-  beetleSprites: []
 --- !u!114 &5871146189039446908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,3 +119,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a31b409a6cb18844b45a8fa96e39cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minGroundNormalY: 0.65
+  gravityModifier: 1.5
+  stinkBeetleSprites:
+  - {fileID: 21300000, guid: 2fe6ceb15c6ff25439cfd39f3f36d697, type: 3}
+  - {fileID: 21300000, guid: 67f1e8ac248ea6049b0fdf0071a1fc37, type: 3}
+  attackRate: 3
+  projectile: {fileID: 1414217698396421580, guid: e1ccb9cf01daecd4ab2110ac3212c441, type: 3}
+  projectileOffset: {x: 2, y: 0, z: 0}
+--- !u!70 &468170587
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939217593840658734}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.04023754, y: -0.11507572}
+  m_Size: {x: 2.3331316, y: 1.9127555}
+  m_Direction: 1
+--- !u!95 &7967918110816023514
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939217593840658734}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: efcc09c1ef93937409c0f7389ff5212f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
