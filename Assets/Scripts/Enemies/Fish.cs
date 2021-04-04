@@ -50,6 +50,11 @@ public class Fish : EnemyPhysics
             other.transform.parent.GetComponent<PlayerController>().Knockforward();
             OnFishDeath();
         }
+        else if (other.CompareTag("Projectile"))
+        {
+            Destroy(other.gameObject);
+            OnFishDeath();
+        }
     }
 
     private void OnFishDeath()

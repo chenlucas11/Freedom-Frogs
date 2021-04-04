@@ -6,7 +6,7 @@ public class StinkBeetle : EnemyPhysics
 {
     [SerializeField] private Sprite[] stinkBeetleSprites;
     private bool dead = false;
-    [SerializeField] private float attackRate = 3f;
+    [SerializeField] private float attackRate = 5f;
     private float canAttack = -1f;
     [SerializeField] private GameObject projectile;
     [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);

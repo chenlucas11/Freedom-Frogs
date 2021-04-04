@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void UpdateAudio(int piecesCollected)
@@ -41,5 +41,10 @@ public class AudioManager : MonoBehaviour
             gameAudio.clip = audioClips[piecesCollected - 1];
             gameAudio.Play();
         }
+    }
+
+    public bool IsPlaying()
+    {
+        return gameAudio.isPlaying;
     }
 }

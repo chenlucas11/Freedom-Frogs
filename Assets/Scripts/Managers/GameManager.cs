@@ -19,17 +19,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && isGamePaused)
+        if (Input.GetKeyDown(KeyCode.Escape) && isGamePaused && !isGameOver)
         {
             ResumeGame();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && !isGamePaused)
+        else if (Input.GetKeyDown(KeyCode.Escape) && !isGamePaused && !isGameOver)
         {
             PauseGame();
-        }
-        if (Input.GetKeyDown(KeyCode.R) && isGameOver == true)
-        {
-            SceneManager.LoadScene(2); // Current Game Scene
         }
     }
 
@@ -54,11 +50,19 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(2); // Current Game Scene
     }
 
     public void QuitGame()
     {
-        Application.Quit();
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
     }
 }

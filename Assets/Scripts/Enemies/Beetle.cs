@@ -5,8 +5,6 @@ using UnityEngine;
 public class Beetle : EnemyPhysics
 {
     private bool flipped = false;
-    [SerializeField] private Sprite[] beetleSprites;
-
     private Animator animator;
 
     private void Start()
@@ -38,19 +36,13 @@ public class Beetle : EnemyPhysics
     {
         if (other.CompareTag("Tongue"))
         {
-            Debug.Log("Tongue hit");
-            if (flipped)
-            {
-                OnBeetleDeath();
-            }
-            else
+            if (!flipped)
             {
                 FlipOver();
             }
         }
         else if (other.CompareTag("Projectile"))
         {
-            Debug.Log("Projectile hit");
             if (flipped)
             {
                 Destroy(other.gameObject);
@@ -70,10 +62,6 @@ public class Beetle : EnemyPhysics
                 player.Knockforward();
                 OnBeetleDeath();
             }
-            else
-            {
-                player.Knockforward();
-            }
         }
     }
 
@@ -82,7 +70,7 @@ public class Beetle : EnemyPhysics
         if (!flipped)
         {
             this.transform.localScale = new Vector2(1, -1);
-            this.GetComponent<SpriteRenderer>().sprite = beetleSprites[0];
+            animator.SetTrigger("OnBeetleFlip");
             flipped = true;
         }
     }

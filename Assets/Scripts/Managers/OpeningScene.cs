@@ -19,8 +19,8 @@ public class OpeningScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
-            NextSlide();
+        //if (Input.anyKeyDown)
+        //  NextSlide();
     }
 
     public void Skip()
@@ -28,12 +28,25 @@ public class OpeningScene : MonoBehaviour
         SceneManager.LoadScene(2); // Current Game Scene
     }
 
+    public void LastSlide()
+    {
+        if (slideNum - 1 >= 0)
+        {
+            slideNum--;
+            sceneImg.sprite = sceneSprites[slideNum];
+        }
+        else
+            SceneManager.LoadScene(0); // Main Menu
+    }
+
     public void NextSlide()
     {
-        slideNum++;
-        if (slideNum >= sceneSprites.Length)
+        if (slideNum + 1 >= sceneSprites.Length)
             Skip();
         else
+        {
+            slideNum++;
             sceneImg.sprite = sceneSprites[slideNum];
+        }
     }
 }

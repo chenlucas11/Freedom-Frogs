@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
     private AudioManager audioManager;
-    [SerializeField] private Text finishText;
+    [SerializeField] private GameObject finishScene;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private Image livesImg;
@@ -18,15 +18,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image middleArrowImg;
     [SerializeField] private Image rightArrowImg;
     [SerializeField] private Sprite[] arrowSprites;
+    [SerializeField] private GameObject tutorialImg;
+    private bool gameFinished = false;
+    private bool tutorialOn = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        finishText.gameObject.SetActive(false);
+        finishScene.gameObject.SetActive(false);
         pauseMenu.gameObject.SetActive(false);
         gameOverMenu.gameObject.SetActive(false);
+        tutorialImg.gameObject.SetActive(false);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
+
+    void Update()
+    {
+        if (gameFinished && !audioManager.IsPlaying())
+        {
+            gameManager.MainMenu();
+        }
     }
 
     public void UpdateLives(int currentLives)
@@ -89,6 +101,21 @@ public class UIManager : MonoBehaviour
 
     private void FinishGameSequence()
     {
-        finishText.gameObject.SetActive(true);
+        finishScene.gameObject.SetActive(true);
+        gameFinished = true;
+    }
+
+    public void UpdateTutorial()
+    {
+        if (!tutorialOn)
+        {
+            tutorialImg.gameObject.SetActive(true);
+            tutorialOn = true;
+        }
+        else
+        {
+            tutorialImg.gameObject.SetActive(false);
+            tutorialOn = false;
+        }
     }
 }

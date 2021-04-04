@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public bool grounded = true;
     private bool tongueOut = false;
     private bool projectileOut = false;
+    private bool tutorialOut = false;
 
     [SerializeField] private Sprite[] idleSprites;
     [SerializeField] private Sprite[] jumpSprites;
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
         piecesCollected = 0;
         tongueOut = false;
         projectileOut = false;
+        tutorialOut = false;
     }
 
     void Update()
@@ -138,16 +140,19 @@ public class PlayerController : MonoBehaviour
 
             if (conductor.beatNum % 4 == 0 && !hasJumped)
             {
-                rigidBody2D.AddForce(new Vector2(horizontalForce * speed, jumpSpeed), ForceMode2D.Impulse);
-                if (!tongueOut && !projectileOut)
-                    playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
-                else if (tongueOut)
+                if (grounded)
                 {
-                    playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
-                }
-                else if (projectileOut)
-                {
-                    playerSprite.sprite = projectileAttackSprites[conductor.beatNum % 4];
+                    rigidBody2D.AddForce(new Vector2(horizontalForce * speed, jumpSpeed), ForceMode2D.Impulse);
+                    if (!tongueOut && !projectileOut)
+                        playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
+                    else if (tongueOut)
+                    {
+                        playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
+                    }
+                    else if (projectileOut)
+                    {
+                        playerSprite.sprite = projectileAttackSprites[conductor.beatNum % 4];
+                    }
                 }
                 hasJumped = true;
                 horizontalForce = 0;
@@ -168,7 +173,7 @@ public class PlayerController : MonoBehaviour
                     playerSprite.sprite = jumpSprites[conductor.beatNum % 4];
                 }
             }
-            else if(tongueOut)
+            else if (tongueOut)
             {
                 playerSprite.sprite = tongueAttackSprites[conductor.beatNum % 4];
             }
@@ -197,12 +202,11 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        StartCoroutine(ApplyFlash());
     }
 
     public void Knockback(Collision2D collision)
     {
-        if (!hit)
+        if(lives > 0)
         {
             ContactPoint2D contactPoint = collision.GetContact(0);
             Vector2 playerPosition = this.transform.position;
@@ -212,27 +216,18 @@ public class PlayerController : MonoBehaviour
                 dir = new Vector2(1, 1);
             else
                 dir = new Vector2(-1, 1);
+            rigidBody2D.velocity = new Vector2(0, 0);
             rigidBody2D.AddForce(dir * force, ForceMode2D.Impulse);
         }
     }
 
     public void Knockforward()
     {
-        if (!hit)
+        if (lives > 0)
         {
-            rigidBody2D.AddForce(new Vector2(1, 1) * force, ForceMode2D.Impulse);
+            rigidBody2D.velocity = new Vector2(0, 0);
+            rigidBody2D.AddForce(new Vector2(1, 1.5f) * force, ForceMode2D.Impulse);
         }
-    }
-
-    IEnumerator ApplyFlash()
-    {
-        hit = true;
-        for (int i = 0; i < 15; i++)
-        {
-            playerSprite.sprite = idleSprites[4];
-            yield return new WaitForSeconds(0.1f);
-        }
-        hit = false;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -243,11 +238,15 @@ public class PlayerController : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 piecesCollected++;
+                if (piecesCollected == 1 && !tutorialOut)
+                {
+                    uIManager.UpdateTutorial();
+                    tutorialOut = true;
+                }
                 uIManager.UpdateMusicPieces(piecesCollected);
                 audioManager.UpdateAudio(piecesCollected);
                 canCollectPiece = Time.time + collectCD;
             }
-
         }
         else if (other.CompareTag("Life"))
         {
@@ -264,8 +263,10 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Deadzone"))
         {
-            lives = 0;
-            uIManager.UpdateLives(lives);
+            for (int i = lives; i > 0; i = lives)
+            {
+                Damage();
+            }
         }
     }
 
