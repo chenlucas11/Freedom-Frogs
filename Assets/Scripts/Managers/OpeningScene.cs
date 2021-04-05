@@ -19,8 +19,8 @@ public class OpeningScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.anyKeyDown)
-        //  NextSlide();
+        if (Input.GetKeyDown(KeyCode.Return))
+            NextSlide();
     }
 
     public void Skip()

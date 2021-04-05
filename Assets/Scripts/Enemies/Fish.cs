@@ -60,9 +60,9 @@ public class Fish : EnemyPhysics
     private void OnFishDeath()
     {
         this.GetComponent<Collider2D>().enabled = false;
-        this.gravityModifier = 0;
-        this.velocity.y = 0;
         fishSprite.sprite = deathSprite;
+        this.velocity = new Vector2(0, 0);
+        this.gravityModifier = 0.1f;
         Destroy(this.gameObject, 1.0f);
     }
 }

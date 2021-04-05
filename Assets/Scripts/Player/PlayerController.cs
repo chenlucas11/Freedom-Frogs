@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpSpeed = 8;
     [SerializeField] private GameObject tongue;
     [SerializeField] private GameObject projectile;
-    [SerializeField] private float force = 5;
+    [SerializeField] private float force = 4;
     [SerializeField] private Vector3 tongue_length = new Vector3(2.5f, 0, 0);
     [SerializeField] private Vector3 projectileOffset = new Vector3(2f, 0, 0);
     private Rigidbody2D rigidBody2D;
@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour
         if (lives > 0)
         {
             rigidBody2D.velocity = new Vector2(0, 0);
-            rigidBody2D.AddForce(new Vector2(1, 1.5f) * force, ForceMode2D.Impulse);
+            rigidBody2D.AddForce(new Vector2(0.8f, 1.3f) * force, ForceMode2D.Impulse);
         }
     }
 
@@ -267,6 +267,11 @@ public class PlayerController : MonoBehaviour
             {
                 Damage();
             }
+        }
+        else if (other.CompareTag("BeetleProj"))
+        {
+            Knockforward();
+            Destroy(other.gameObject);
         }
     }
 

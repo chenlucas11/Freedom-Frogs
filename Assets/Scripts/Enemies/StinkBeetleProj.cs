@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class StinkBeetleProj : MonoBehaviour
 {
-    [SerializeField] private float speed = 8;
+    [SerializeField] private float speed = 7;
 
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(this.gameObject, 1.0f);
+        Destroy(this.gameObject, 0.8f);
     }
 
     // Update is called once per frame

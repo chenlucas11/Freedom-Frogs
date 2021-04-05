@@ -39,6 +39,10 @@ public class UIManager : MonoBehaviour
         {
             gameManager.MainMenu();
         }
+        if(Input.GetKeyDown(KeyCode.Return) && tutorialOn)
+        {
+            UpdateTutorial();
+        }
     }
 
     public void UpdateLives(int currentLives)
