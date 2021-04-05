@@ -268,11 +268,6 @@ public class PlayerController : MonoBehaviour
                 Damage();
             }
         }
-        else if (other.CompareTag("BeetleProj"))
-        {
-            Knockforward();
-            Destroy(other.gameObject);
-        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
