@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<PlayerController>(); ;
-        Destroy(this.gameObject, 1.0f);
+        Destroy(this.gameObject, 1.4f);
     }
 
     // Update is called once per frame

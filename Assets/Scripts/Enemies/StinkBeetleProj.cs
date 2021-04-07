@@ -25,10 +25,9 @@ public class StinkBeetleProj : MonoBehaviour
             other.transform.GetComponent<PlayerController>().Damage();
             Destroy(this.gameObject);
         }
-        else if (other.CompareTag("PlayerBottom"))
+        else if (other.CompareTag("Projectile"))
         {
-            PlayerController player = other.transform.parent.GetComponent<PlayerController>();
-            player.Knockforward();
+            Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
     }
