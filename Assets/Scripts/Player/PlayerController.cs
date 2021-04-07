@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool tongueOut = false;
     private bool projectileOut = false;
     private bool tutorialOut = false;
+    private Vector3 checkpoint;
 
     [SerializeField] private Sprite[] idleSprites;
     [SerializeField] private Sprite[] jumpSprites;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer playerSprite;
     private Conductor conductor;
     private AudioManager audioManager;
+    private GameManager gameManager;
 
 
     //private Animator animator;
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         conductor = GameObject.Find("Conductor").GetComponent<Conductor>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         //animator = GetComponent<Animator>();
@@ -196,12 +199,12 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         lives--;
-        uIManager.UpdateLives(lives);
-
         if (lives < 1)
         {
-            Destroy(this.gameObject);
+            lives = 3;
+            transform.position = gameManager.lastCheckpoint;
         }
+        uIManager.UpdateLives(lives);
     }
 
     public void Knockback(Collision2D collision)
@@ -236,6 +239,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time > canCollectPiece)
             {
+                gameManager.lastCheckpoint = other.transform.position;
                 Destroy(other.gameObject);
                 piecesCollected++;
                 if (piecesCollected == 1 && !tutorialOut)
@@ -263,10 +267,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Deadzone"))
         {
-            for (int i = lives; i > 0; i = lives)
-            {
-                Damage();
-            }
+            lives = 1;
+            Damage();
         }
     }
 

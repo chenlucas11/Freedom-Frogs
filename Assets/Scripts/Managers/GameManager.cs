@@ -9,6 +9,21 @@ public class GameManager : MonoBehaviour
     private bool isGamePaused;
 
     private UIManager uIManager;
+    private static GameManager instance;
+    public Vector2 lastCheckpoint;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        Time.timeScale = 0;
         isGameOver = true;
     }
 
@@ -51,7 +67,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(2); // Current Game Scene
+        isGameOver = false;
     }
 
     public void QuitGame()
